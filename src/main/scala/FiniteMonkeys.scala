@@ -15,7 +15,7 @@ class Monkey extends Actor {
   
   Random.setSeed(Random.nextLong)
   
-  var feedback: Array[Set[String]] = Array.fill(101)(Set.empty)
+  val feedback: Array[Set[String]] = Array.fill(101)(Set.empty)
 
   val guessWord = "......................................" // word used to calculate the guessed word length
 
@@ -100,7 +100,7 @@ class Monkey extends Actor {
 
 class MonkeySupervisor(word: String) extends Actor {
 
-  var monkeys: List[ActorRef] = (for (i <- (0 until 1)) yield context.actorOf(Props(new Monkey()), "monkey" + i)).toList
+  val monkeys: List[ActorRef] = (for (i <- (0 until 1)) yield context.actorOf(Props(new Monkey()), "monkey" + i)).toList
 
   def distance(word: String): Double = {
     1 - Levenshtein.distance(this.word, word).toDouble / this.word.length
@@ -131,7 +131,7 @@ class MonkeySupervisor(word: String) extends Actor {
 
 class Poet(poem: String) extends Actor {
 
-  var monkeySupervisors: List[ActorRef] = (for (i <- (0 until poem.split(" ").length)) yield context.actorOf(Props(new MonkeySupervisor(poem.split(" ")(i))), "monkeySupervisor" + i)).toList
+  val monkeySupervisors: List[ActorRef] = (for (i <- (0 until poem.split(" ").length)) yield context.actorOf(Props(new MonkeySupervisor(poem.split(" ")(i))), "monkeySupervisor" + i)).toList
 
   def needInspiration() = {
     println("Poet at work")
